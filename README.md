@@ -6,6 +6,8 @@
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/007revad)
 <!--- [![committers.top badge](https://user-badge.committers.top/australia/007revad.svg)](https://user-badge.committers.top/australia/007revad) --->
 
+### NOT FINISHED YET
+
 ### Description
 
 Asustor app to install Ookla Speedtest and run it in a GUI.
