@@ -13,7 +13,10 @@
   },
   "adm-desktop": {
     "app": {
-      "type": "webserver"
+      "type": "custom",
+      "protocol": "http",
+      "port": 39876,
+      "url": "/"
     },
     "privilege": {
       "accessible": "administrators",
@@ -21,9 +24,6 @@
     }
   },
   "register": {
-    "prerequisites": {
-        "enable-service": ["httpd"]
-    },
     "boot-priority": {
       "start-order": 50,
       "stop-order": 50
