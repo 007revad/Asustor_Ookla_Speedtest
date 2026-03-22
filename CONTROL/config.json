@@ -1,0 +1,29 @@
+{
+  "general": {
+    "package": "Asustorspeedtest",
+    "name": "Speedtest",
+    "version": "1.0.0",
+    "depends": ["netdata","python3"],
+    "developer": "007revad",
+    "maintainer": "007revad",
+    "email": "007daver@gmail.com",
+    "website": "https://github.com/007revad/Asustor_Ookla_Speedtest",
+    "architecture": "any",
+    "firmware": "5.0.0"
+  },
+  "adm-desktop": {
+    "app": {
+      "type": "webserver"
+    },
+    "privilege": {
+      "accessible": "administrators",
+      "customizable": true
+    }
+  },
+  "register": {
+    "boot-priority": {
+      "start-order": 50,
+      "stop-order": 50
+    }
+  }
+}
