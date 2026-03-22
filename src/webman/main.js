@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
         urlParams.append('action', action);
         Object.keys(params).forEach(key => urlParams.append(key, params[key]));
 
-        return fetch('api.cgi', {
+        return fetch('cgi-bin/api.cgi', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: urlParams.toString()
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     systemInfo.innerHTML = `
                         <strong>MODEL:</strong> <span>${infoObj.MODEL || 'N/A'}</span>
                         <strong>PLATFORM:</strong> <span>${infoObj.PLATFORM || 'N/A'}</span>
-                        <strong>DSM_VERSION:</strong> <span>${infoObj.DSM_VERSION || 'N/A'}</span>
+                        <strong>ADM_VERSION:</strong> <span>${infoObj.ADM_VERSION || 'N/A'}</span>
                     `;
                 } else {
                     systemInfo.innerHTML = `<span style="color: red;">Failed to load system information: ${data.message || 'Unknown error'}</span>`;

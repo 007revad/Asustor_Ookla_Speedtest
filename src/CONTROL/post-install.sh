@@ -39,6 +39,11 @@ install_or_upgrade() {
     # Uncomment and add entries below if you add ARM binaries to bin/
     # ln -sf aarch64 "${BIN_DIR}/armv8"  2>/dev/null
 
+    # Create cgi-bin symlink for Python HTTP server CGI support
+    mkdir -p "${PKG_ROOT}/webman/cgi-bin"
+    ln -sf ../api.cgi "${PKG_ROOT}/webman/cgi-bin/api.cgi"
+    log_message "Created cgi-bin/api.cgi symlink"
+
     # Set execute permissions for speedtest binaries
     chmod +x "${BIN_DIR}/x86_64/speedtest"  2>/dev/null && \
         log_message "Set +x on bin/x86_64/speedtest" || \
@@ -64,6 +69,13 @@ install_or_upgrade() {
     else
         log_message "Note: No logrotate config found, skipping"
     fi
+
+    # Create BusyBox httpd config to enable CGI execution
+    cat > "${PKG_ROOT}/var/httpd.conf" << 'EOF'
+*.cgi:application/x-httpd-cgi
+EOF
+    chmod 644 "${PKG_ROOT}/var/httpd.conf"
+    log_message "Created httpd.conf"
 
     if [ -z "${ERRORS}" ]; then
         log_message "Post-installation completed successfully"

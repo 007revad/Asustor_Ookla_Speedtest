@@ -6,12 +6,10 @@ PIDFILE="${PKG_DIR}/var/httpd.pid"
 case "$1" in
     start)
         echo "Starting $NAME"
-        # BusyBox httpd with CGI support
-        busybox httpd -p 39876 -h "${PKG_DIR}/webman" \
-            -c "${PKG_DIR}/var/httpd.conf" \
-            -f &
+        python3 "${PKG_DIR}/bin/httpd.py" 39876 "${PKG_DIR}/webman" \
+            > "${PKG_DIR}/var/httpd.log" 2>&1 &
         echo $! > "$PIDFILE"
-        ;;
+    ;;
     stop)
         echo "Stopping $NAME"
         if [ -f "$PIDFILE" ]; then
