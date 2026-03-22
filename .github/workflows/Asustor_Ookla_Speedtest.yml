@@ -1,0 +1,64 @@
+name: Build n Release Asustor Ookla Speedtest Package
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  build-apk:
+    name: Build Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get release tag
+        id: get_latest_tag
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            echo "new_tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            latest_tag=$(curl -s https://api.github.com/repos/007revad/Asustor_Ookla_Speedtest/releases/latest | jq -r .tag_name)
+            echo "new_tag=$latest_tag" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update version in config.json
+        run: |
+          tag="${{ steps.get_latest_tag.outputs.new_tag }}"
+          # Strip leading 'v' if present (config.json version should be e.g. 1.0.0 not v1.0.0)
+          version="${tag#v}"
+          jq --arg v "$version" '.general.version = $v' src/CONTROL/config.json > tmp.json
+          mv tmp.json src/CONTROL/config.json
+
+      - name: Package Asustor App
+        id: package_asustor_app
+        uses: asustor-contrib/ga-package-asustor-app@v2
+        with:
+          apkg-dir: 'src'
+          out-dir: 'dist'
+
+      #- name: Rename package
+      #  run: |
+      #    mkdir -p dist
+      #    tag="${{ steps.get_latest_tag.outputs.new_tag }}"
+      #    # apkg-tools names the file: PACKAGE_VERSION_ARCHITECTURE.apk
+      #    # Rename to a friendlier release filename
+      #    for f in dist/*.apk; do
+      #      mv "$f" "dist/Asustorspeedtest-${tag}.apk"
+      #    done
+      #    ls -l dist/
+
+      - name: Upload Package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Asustorspeedtest-${{ steps.get_latest_tag.outputs.new_tag }}
+          path: dist/*.apk
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.get_latest_tag.outputs.new_tag }}
+          make_latest: false
+          files: dist/*.apk

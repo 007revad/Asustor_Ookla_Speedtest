@@ -1,9 +1,9 @@
 #!/bin/sh
+NAME="Asustor Ookla Speedtest"
 
 case "$1" in
     start)
         echo "Starting $NAME"
-		ldconfig
         ;;
     stop)
         echo "Stopping $NAME"

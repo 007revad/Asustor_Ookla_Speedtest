@@ -7,13 +7,13 @@
 # --------- 1. Common variables and path calculations -------------
 
 PKG_NAME="Asustorspeedtest"
-PKG_ROOT="/volume1/.@plugins/AppCentral/${PKG_NAME}"
-PKG_VERSION=$(grep -oP '"version":\s*"\K[^"]+' ${PKG_ROOT}/CONTROL/config.json
+PKG_ROOT="/usr/local/AppCentral/${PKG_NAME}"
+PKG_VERSION=$(grep -oP '"version":\s*"\K[^"]+' ${PKG_ROOT}/CONTROL/config.json)
 LOG_DIR="${PKG_ROOT}/var"
 LOG_FILE="${LOG_DIR}/api.log"
 SERVERS_FILE="${LOG_DIR}/servers.list"
 BIN_DIR="${PKG_ROOT}/bin"
-RESULT_DIR="/volume1/.@plugins/www/${PKG_NAME}/result"
+RESULT_DIR="/usr/local/www/${PKG_NAME}/result"
 RESULT_FILE="${RESULT_DIR}/speedtest.result"
 
 SPEED_SCRIPT="${BIN_DIR}/speedtest.sh"
@@ -89,11 +89,11 @@ log "Request: ACTION=${ACTION}, OPTION=[${OPTION}]"
 
 # --------- 5. JSON utility function -----------------------------
 
-json_escape() {
+json_escape(){ 
     echo "$1" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read()))'
 }
 
-json_response() {
+json_response(){ 
     local ok="$1" msg="$2" data="$3"
     local msg_json=$(echo "$msg" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))')
     if [ -z "$data" ]; then
@@ -104,7 +104,7 @@ json_response() {
     fi
 }
 
-clean_system_string() {
+clean_system_string(){ 
     local input="$1"
     input=$(echo "$input" | sed 's/ unknown//g; s/unknown //g; s/^unknown$//')
     input=$(echo "$input" | sed 's/  */ /g; s/^ *//; s/ *$//')
@@ -116,6 +116,13 @@ clean_system_string() {
 }
 
 get_section_key_value(){ 
+    local config_file="$1" section="$2" key="$3"
+    if confutil -list "$config_file" "$section" | grep -q "$key"; then
+        confutil -get "$config_file" "$section" "$key"
+    fi
+}
+
+get_section_key_value(){ 
     # Function to read a value from an INI file section and key
     # Usage: get_section_key_value <file> <section> <key> <value>
     local config_file="$1"
@@ -123,9 +130,10 @@ get_section_key_value(){
     local key="$3"
     #if confutil -list "$config_file" "$section" >/dev/null; then
     if confutil -list "$config_file" "$section" | grep -q "$key"; then
-        returned="$(confutil -get "$config_file" "$section" "$key")"
-    else
-        returned=""
+        #returned="$(confutil -get "$config_file" "$section" "$key")"
+        confutil -get "$config_file" "$section" "$key"
+    #else
+    #    returned=""
     fi
 }
 
@@ -139,12 +147,12 @@ set_section_key_value(){
     confutil -set "$config_file" "$section" "$key" "$value"
 }
 
-get_system_info() {
-    local model platform version version
+get_system_info(){ 
+    local model platform version
 
-    model="$(get_section_key_value /etc/nas.conf Model 2>/dev/null || echo '')"
-    platform="$(uname -m 2>/dev/null || echo '')"
-    version="$(get_section_key_value /etc/nas.conf Version 2>/dev/null || echo '')"
+    model="$(get_section_key_value /etc/nas.conf Basic Model)"
+    platform="$(uname -m)"
+    version="$(get_section_key_value /etc/nas.conf Basic Version)"
 
     model="$(clean_system_string "$model")"
     platform="$(clean_system_string "$platform")"
@@ -183,7 +191,8 @@ servers)
     # Use a generous timeout for slow ARM devices.
     log "[DEBUG] Fetching server list"
 
-    raw_output=$(timeout 120 env HOME=/var/packages/Asustorspeedtest/home "${BIN_DIR}/${ARCH}/speedtest" \
+    #raw_output=$(timeout 120 env HOME=/var/packages/Asustorspeedtest/home "${BIN_DIR}/${ARCH}/speedtest" \
+    raw_output=$(timeout 120 "${BIN_DIR}/${ARCH}/speedtest" \
         --servers --accept-license --accept-gdpr 2>"${SVR_STDERR}")
     RET=${PIPESTATUS[0]}
     output=$(echo "$raw_output" | tail -n +5)
@@ -257,14 +266,17 @@ run)
     
             if [ -n "$OPTION" ]; then
                 #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                timeout 240 "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             elif [[ "$ID" =~ ^[0-9]+$ ]]; then
                 # Only pass ID when it is a non-empty string of digits
                 #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                timeout 240 "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             else
                 #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
+                timeout 240 "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             fi
             CMD_PID=$!
     

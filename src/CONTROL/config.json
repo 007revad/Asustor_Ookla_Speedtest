@@ -1,9 +1,9 @@
 {
   "general": {
     "package": "Asustorspeedtest",
-    "name": "Speedtest",
+    "name": "Asustor Ookla Speedtest",
     "version": "1.0.0",
-    "depends": ["netdata","python3"],
+    "depends": ["python3"],
     "developer": "007revad",
     "maintainer": "007revad",
     "email": "007daver@gmail.com",
@@ -21,6 +21,9 @@
     }
   },
   "register": {
+    "prerequisites": {
+        "enable-service": ["httpd"]
+    },
     "boot-priority": {
       "start-order": 50,
       "stop-order": 50
