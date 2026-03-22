@@ -1,24 +1,32 @@
-# <img src="images/icon.png" width="40"> Heading goes here
+# <img src="images/icon_rounded.png" width="70"> Asustor Ookla Speedtest
 
-<a href="https://github.com/007revad/REPO_NAME/releases"><img src="https://img.shields.io/github/release/007revad/REPO_NAME.svg"></a>
-![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2F007revad%2FREPO_NAME&label=Visitors&icon=github&color=%23198754&message=&style=flat&tz=Australia%2FSydney)
+<a href="https://github.com/007revad/Asustor_Ookla_Speedtest/releases"><img src="https://img.shields.io/github/release/007revad/Asustor_Ookla_Speedtest.svg"></a>
+![Badge](https://hitscounter.dev/api/hit?url=https%3A%2F%2Fgithub.com%2F007revad%2FAsustor_Ookla_Speedtest&label=Visitors&icon=github&color=%23198754&message=&style=flat&tz=Australia%2FSydney)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/paypalme/007revad)
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/007revad)
 <!--- [![committers.top badge](https://user-badge.committers.top/australia/007revad.svg)](https://user-badge.committers.top/australia/007revad) --->
 
 ### Description
 
-Description goes here
+Asustor app to install Ookla Speedtest and run it in a GUI.
+
+### Download the package
+
+1. Download the latest version .spk file from https://github.com/007revad/Asustor_Ookla_Speedtest/releases and save it to your Asustor.
+2. In App Central click on Management then Manual Install.
+3. Browse to where you downloaded the .apk file.
+4. Select the .apk file and click Upload.
+5. [Set the permissions that the package needs](https://github.com/007revad/Asustor_Ookla_Speedtest/blob/main/set_package_permissions.md). <-- **IMPORTANT**
 
 ### Download the script
 
-1. Download the latest version _Source code (zip)_ from https://github.com/007revad/REPO_NAME/releases
-2. Save the download zip file to a folder on the Synology.
+1. Download the latest version _Source code (zip)_ from https://github.com/007revad/Asustor_Ookla_Speedtest/releases
+2. Save the download zip file to a folder on the Asustor.
 3. Unzip the zip file.
 
 ### To run the script via task scheduler
 
-See [How to run from task scheduler](https://github.com/007revad/REPO_NAME/blob/main/how_to_run_from_scheduler.md)
+See [How to run from task scheduler](https://github.com/007revad/Asustor_Ookla_Speedtest/blob/main/how_to_run_from_scheduler.md)
 
 ### To run the script via SSH
 
@@ -34,7 +42,7 @@ sudo -s /volume1/scripts/SCRIPT_NAME.sh
 
 If the script won't run check the following:
 
-1. Make sure you download the zip file and unzipped it to a folder on your Synology (not on your computer).
+1. Make sure you download the zip file and unzipped it to a folder on your Asustor (not on your computer).
 2. If the path to the script contains any spaces you need to enclose the path/scriptname in double quotes:
    ```YAML
    sudo -s "/volume1/my scripts/SCRIPT_NAME.sh"
