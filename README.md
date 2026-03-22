@@ -10,48 +10,23 @@
 
 Asustor app to install Ookla Speedtest and run it in a GUI.
 
+### Requirements
+
+This script needs bash installed in ADM. The easiest way to install bash is to install the Netdata app in App Central as it includes bash.
+
+<p align="center">Install Netdata app</p>
+<p align="center"><img src="/images/install_netdata.png"></p>
+
+<p align="center">Leave Enable port fowarding UNTICKED</p>
+<p align="center"><img src="/images/leave_unticked.png"></p>
+
 ### Download the package
 
-1. Download the latest version .spk file from https://github.com/007revad/Asustor_Ookla_Speedtest/releases and save it to your Asustor.
+1. Download the latest version .apk file from https://github.com/007revad/Asustor_Ookla_Speedtest/releases and save it to your Asustor.
 2. In App Central click on Management then Manual Install.
 3. Browse to where you downloaded the .apk file.
 4. Select the .apk file and click Upload.
 5. [Set the permissions that the package needs](https://github.com/007revad/Asustor_Ookla_Speedtest/blob/main/set_package_permissions.md). <-- **IMPORTANT**
-
-### Download the script
-
-1. Download the latest version _Source code (zip)_ from https://github.com/007revad/Asustor_Ookla_Speedtest/releases
-2. Save the download zip file to a folder on the Asustor.
-3. Unzip the zip file.
-
-### To run the script via task scheduler
-
-See [How to run from task scheduler](https://github.com/007revad/Asustor_Ookla_Speedtest/blob/main/how_to_run_from_scheduler.md)
-
-### To run the script via SSH
-
-[How to enable SSH and login to DSM via SSH](https://kb.synology.com/en-global/DSM/tutorial/How_to_login_to_DSM_with_root_permission_via_SSH_Telnet)
-
-```YAML
-sudo -s /volume1/scripts/SCRIPT_NAME.sh
-```
-
-**Note:** Replace /volume1/scripts/ with the path to where the script is located.
-
-### Troubleshooting
-
-If the script won't run check the following:
-
-1. Make sure you download the zip file and unzipped it to a folder on your Asustor (not on your computer).
-2. If the path to the script contains any spaces you need to enclose the path/scriptname in double quotes:
-   ```YAML
-   sudo -s "/volume1/my scripts/SCRIPT_NAME.sh"
-   ```
-3. Make sure you unpacked the zip or rar file that you downloaded and are trying to run the SCRIPT_NAME.sh file.
-4. Set the script file as executable:
-   ```YAML
-   sudo chmod +x "/volume1/scripts/SCRIPT_NAME.sh"
-   ```
 
 ### Screenshots
 
