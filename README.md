@@ -6,21 +6,9 @@
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/007revad)
 <!--- [![committers.top badge](https://user-badge.committers.top/australia/007revad.svg)](https://user-badge.committers.top/australia/007revad) --->
 
-### NOT FINISHED YET
-
 ### Description
 
 Asustor app to install Ookla Speedtest and run it in a GUI.
-
-### Requirements
-
-This script needs bash installed in ADM. The easiest way to install bash is to install the Netdata app in App Central as it includes bash.
-
-<p align="center">Install Netdata app</p>
-<p align="center"><img src="/images/install_netdata.png"></p>
-
-<p align="center">Leave Enable port fowarding UNTICKED</p>
-<p align="center"><img src="/images/leave_unticked.png"></p>
 
 ### Download the package
 
@@ -28,7 +16,6 @@ This script needs bash installed in ADM. The easiest way to install bash is to i
 2. In App Central click on Management then Manual Install.
 3. Browse to where you downloaded the .apk file.
 4. Select the .apk file and click Upload.
-5. [Set the permissions that the package needs](https://github.com/007revad/Asustor_Ookla_Speedtest/blob/main/set_package_permissions.md). <-- **IMPORTANT**
 
 ### Screenshots
 
