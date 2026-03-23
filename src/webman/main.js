@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     systemInfo.innerHTML = `
                         <strong>MODEL:</strong> <span>${infoObj.MODEL || 'N/A'}</span>
                         <strong>PLATFORM:</strong> <span>${infoObj.PLATFORM || 'N/A'}</span>
-                        <strong>ADM_VERSION:</strong> <span>${infoObj.ADM_VERSION || 'N/A'}</span>
+                        <strong>ADM VERSION:</strong> <span>${infoObj.ADM_VERSION || 'N/A'}</span>
                     `;
                 } else {
                     systemInfo.innerHTML = `<span style="color: red;">Failed to load system information: ${data.message || 'Unknown error'}</span>`;

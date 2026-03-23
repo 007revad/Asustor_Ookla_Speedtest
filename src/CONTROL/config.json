@@ -1,7 +1,7 @@
 {
   "general": {
-    "package": "Asustorspeedtest",
-    "name": "Asustor Ookla Speedtest",
+    "package": "Ookla-speedtest",
+    "name": "Ookla Speedtest",
     "version": "1.0.0",
     "depends": ["python3"],
     "developer": "007revad",

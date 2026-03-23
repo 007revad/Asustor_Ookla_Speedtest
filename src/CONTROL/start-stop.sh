@@ -1,6 +1,6 @@
 #!/bin/sh
-NAME="Asustor Ookla Speedtest"
-PKG_DIR="/usr/local/AppCentral/Asustorspeedtest"
+NAME="Ookla Speedtest"
+PKG_DIR="/usr/local/AppCentral/Ookla-speedtest"
 PIDFILE="${PKG_DIR}/var/httpd.pid"
 
 case "$1" in

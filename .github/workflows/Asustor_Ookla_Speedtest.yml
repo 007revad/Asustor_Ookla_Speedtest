@@ -52,21 +52,10 @@ jobs:
           apkg-dir: 'src'
           out-dir: 'dist'
 
-      #- name: Rename package
-      #  run: |
-      #    mkdir -p dist
-      #    tag="${{ steps.get_latest_tag.outputs.new_tag }}"
-      #    # apkg-tools names the file: PACKAGE_VERSION_ARCHITECTURE.apk
-      #    # Rename to a friendlier release filename
-      #    for f in dist/*.apk; do
-      #      mv "$f" "dist/Asustorspeedtest-${tag}.apk"
-      #    done
-      #    ls -l dist/
-
       - name: Upload Package artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Asustorspeedtest-${{ steps.get_latest_tag.outputs.new_tag }}
+          name: Ookla-speedtest-${{ steps.get_latest_tag.outputs.new_tag }}
           path: dist/*.apk
 
       - name: Release

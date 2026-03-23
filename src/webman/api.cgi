@@ -6,10 +6,9 @@
 
 # --------- 1. Common variables and path calculations -------------
 
-PKG_NAME="Asustorspeedtest"
+PKG_NAME="Ookla-speedtest"
 PKG_ROOT="/usr/local/AppCentral/${PKG_NAME}"
-#PKG_VERSION=$(grep -oP '"version":\s*"\K[^"]+' ${PKG_ROOT}/CONTROL/config.json)
-PKG_VERSION=$(grep -oE '"version":\s*"\K[^"]+' ${PKG_ROOT}/CONTROL/config.json)
+PKG_VERSION=$(grep '"version"' ${PKG_ROOT}/CONTROL/config.json | grep -oE '[0-9]+\.[0-9]+\.[0-9]+')
 LOG_DIR="${PKG_ROOT}/var"
 LOG_FILE="${LOG_DIR}/api.log"
 SERVERS_FILE="${LOG_DIR}/servers.list"
@@ -28,12 +27,10 @@ chmod 755 "${RESULT_DIR}"
 
 touch "${SERVERS_FILE}"
 chmod 644 "${SERVERS_FILE}"
-#chown Asustorspeedtest:Asustorspeedtest "${SERVERS_FILE}"
 
 SVR_STDERR="${LOG_DIR}/last_servers_stderr.log"
 touch "${SVR_STDERR}"
 chmod 644 "${SVR_STDERR}"
-#chown Asustorspeedtest:Asustorspeedtest "${SVR_STDERR}"
 
 ARCH="$(uname -m)"
 
@@ -129,12 +126,8 @@ get_section_key_value(){
     local config_file="$1"
     local section="$2"
     local key="$3"
-    #if confutil -list "$config_file" "$section" >/dev/null; then
     if confutil -list "$config_file" "$section" | grep -q "$key"; then
-        #returned="$(confutil -get "$config_file" "$section" "$key")"
         confutil -get "$config_file" "$section" "$key"
-    #else
-    #    returned=""
     fi
 }
 
@@ -192,7 +185,6 @@ servers)
     # Use a generous timeout for slow ARM devices.
     log "[DEBUG] Fetching server list"
 
-    #raw_output=$(timeout 120 env HOME=/var/packages/Asustorspeedtest/home "${BIN_DIR}/${ARCH}/speedtest" \
     raw_output=$(timeout 120 env HOME=/root "${BIN_DIR}/${ARCH}/speedtest" \
         --servers --accept-license --accept-gdpr 2>"${SVR_STDERR}")
     RET=${PIPESTATUS[0]}
@@ -266,17 +258,11 @@ run)
             rm -f "$TMP_RESULT" "$TMP_STDERR"
     
             if [ -n "$OPTION" ]; then
-                #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
                 timeout 240 env HOME=/root "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             elif [[ "$ID" =~ ^[0-9]+$ ]]; then
                 # Only pass ID when it is a non-empty string of digits
-                #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
                 timeout 240 env HOME=/root "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             else
-                #timeout 240 sudo -u Asustorspeedtest env HOME=/var/packages/Asustorspeedtest/home "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-                #timeout 240 sudo -u Asustorspeedtest "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
                 timeout 240 env HOME=/root "${SPEED_SCRIPT}" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             fi
             CMD_PID=$!
@@ -305,7 +291,6 @@ run)
                 mv "$TMP_RESULT" "${RESULT_FILE}"
                 chmod 644 "${RESULT_FILE}"
                 SPEED_RESULT="$(cat "${RESULT_FILE}")"
-                #RESULT_URL="$(grep -oP 'https://www\.speedtest\.net/result/c/[0-9a-f-]+' "${RESULT_FILE}" | head -1)"
                 RESULT_URL="$(grep -oE 'https://www\.speedtest\.net/result/c/[0-9a-f-]+' "${RESULT_FILE}" | head -1)"
                 RESULT_URL_JSON=$(echo "$RESULT_URL" | python3 -c 'import json,sys; print(json.dumps(sys.stdin.read().strip()))')
                 DATA_JSON=$(json_escape "$SPEED_RESULT")

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PKG_NAME="Asustorspeedtest"
+PKG_NAME="Ookla-speedtest"
 PKG_ROOT="/usr/local/AppCentral/${PKG_NAME}"
 BIN_DIR="${PKG_ROOT}/bin"
 VAR_DIR="${PKG_ROOT}/var"
@@ -58,8 +58,8 @@ chmod +x "${PKG_ROOT}/webman/api.cgi" 2>/dev/null && \
     log_message "Warning: webman/api.cgi not found"
 
 # Setup logrotate
-if cp "${PKG_ROOT}/webman/logrotate" /etc/logrotate.d/asustorspeedtest 2>/dev/null; then
-    chmod 644 /etc/logrotate.d/asustorspeedtest
+if cp "${PKG_ROOT}/webman/logrotate" /etc/logrotate.d/ooklaspeedtest 2>/dev/null; then
+    chmod 644 /etc/logrotate.d/ooklaspeedtest
     log_message "Installed logrotate config"
 else
     log_message "Note: No logrotate config found, skipping"
