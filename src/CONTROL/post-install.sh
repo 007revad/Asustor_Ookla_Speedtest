@@ -65,6 +65,14 @@ else
     log_message "Note: No logrotate config found, skipping"
 fi
 
+# Set shebang in bash scripts
+arch="$(uname -m)"
+for script in "${BIN_DIR}"/*.sh; do
+    sed -i "1s|.*|#!${BIN_DIR}/${arch}/bash|" "${script}"
+    log_message "shebang in ${script} set to:"
+    log_message "#!${BIN_DIR}/${arch}/bash|"
+done
+
 if [ -z "${ERRORS}" ]; then
     log_message "Post-installation completed successfully"
 else
