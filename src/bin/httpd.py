@@ -12,7 +12,16 @@ class NoDemoteCGIHandler(CGIHTTPRequestHandler):
         finally:
             os.setuid = old_setuid
 
+#if __name__ == '__main__':
+#    port = int(sys.argv[1]) if len(sys.argv) > 1 else 39876
+#    os.chdir(sys.argv[2] if len(sys.argv) > 2 else '.')
+#    HTTPServer(('', port), NoDemoteCGIHandler).serve_forever()
+
 if __name__ == '__main__':
     port = int(sys.argv[1]) if len(sys.argv) > 1 else 39876
-    os.chdir(sys.argv[2] if len(sys.argv) > 2 else '.')
-    HTTPServer(('', port), NoDemoteCGIHandler).serve_forever()
+    webroot = sys.argv[2] if len(sys.argv) > 2 else '.'
+    # Use absolute path and chdir before binding
+    webroot = os.path.abspath(webroot)
+    os.chdir(webroot)
+    server = HTTPServer(('', port), NoDemoteCGIHandler)
+    server.serve_forever()

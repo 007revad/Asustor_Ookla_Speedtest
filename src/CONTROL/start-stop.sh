@@ -16,12 +16,14 @@ case "$1" in
             kill $(cat "$PIDFILE") 2>/dev/null
             rm -f "$PIDFILE"
         fi
-        ;;
+        # Safety net in case pidfile is missing or stale
+        pkill -f "httpd.py" 2>/dev/null
+    ;;
     restart|force-reload)
         $0 stop
-        sleep 1
+        sleep 2
         $0 start
-        ;;
+    ;;
     *)
         echo "Usage: $0 {start|stop|restart}"
         exit 2
