@@ -20,9 +20,19 @@ Asustor app to install Ookla Speedtest and run it in a GUI.
 ### Screenshots
 
 <!--- <p align="center">Description of image 1 goes here</p> --->
-<p align="center"><img src="/images/IMAGE_NAME.png"></p>
+<p align="center"><img src="/images/installed.png"></p>
 
-<br>
+<!--- <br> --->
 
 <!--- <p align="center">Description of image 2 goes here</p> --->
-<p align="center"><img src="/images/IMAGE_NAME.png"></p>
+<p align="center"><img src="/images/result_graphic.png"></p>
+
+<!--- <br> --->
+
+<!--- <p align="center">Description of image 2 goes here</p> --->
+<p align="center"><img src="/images/result_text.png"></p>
+
+<!--- <br> --->
+
+<!--- <p align="center">Select Server list</p> --->
+<p align="center"><img src="/images/select_server.png"></p>
