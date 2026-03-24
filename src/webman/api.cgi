@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ###################################################################################################
 # Asustor Ookla Speedtest API - CGI API (generate_speedtest_result.sh Content internal integration)
@@ -48,31 +48,25 @@ echo "" # Header/body separator blank line
 
 # --------- 4. Parsing URL-encoded parameters --------------------
 
-urldecode() { : "${*//+/ }"; echo -e "${_//%/\\x}"; }
-declare -A PARAM
-parse_kv() {
-    local kv_pair key val
-    IFS='&' read -ra kv_pair <<< "$1"
-    for pair in "${kv_pair[@]}"; do
-        IFS='=' read -r key val <<< "${pair}"
-        key="$(urldecode "${key}")"
-        val="$(urldecode "${val}")"
-        PARAM["${key}"]="${val}"
-    done
+urldecode() {
+    printf '%b' "$(echo "$*" | sed 's/+/ /g; s/%/\\x/g')"
+}
+
+get_param() {
+    echo "$QUERY_DATA" | tr '&' '\n' | grep "^${1}=" | head -1 | cut -d'=' -f2- | sed 's/+/ /g; s/%/\\x/g' | xargs -0 printf '%b'
 }
 
 case "$REQUEST_METHOD" in
 POST)
     CONTENT_LENGTH=${CONTENT_LENGTH:-0}
     if [ "$CONTENT_LENGTH" -gt 0 ]; then
-        read -r -n "$CONTENT_LENGTH" POST_DATA
+        QUERY_DATA="$(head -c "$CONTENT_LENGTH")"
     else
-        POST_DATA=""
+        QUERY_DATA=""
     fi
-    parse_kv "${POST_DATA}"
     ;;
 GET)
-    parse_kv "${QUERY_STRING}"
+    QUERY_DATA="${QUERY_STRING}"
     ;;
 *)
     log "Unsupported METHOD: ${REQUEST_METHOD}"
@@ -81,8 +75,8 @@ GET)
     ;;
 esac
 
-ACTION="${PARAM[action]}"
-OPTION="${PARAM[option]}"
+ACTION="$(get_param action)"
+OPTION="$(get_param option)"
 log "Request: ACTION=${ACTION}, OPTION=[${OPTION}]"
 
 # --------- 5. JSON utility function -----------------------------
@@ -187,15 +181,15 @@ servers)
 
     raw_output=$(timeout 120 env HOME=/root "${BIN_DIR}/${ARCH}/speedtest" \
         --servers --accept-license --accept-gdpr 2>"${SVR_STDERR}")
-    RET=${PIPESTATUS[0]}
+    RET=$?
     output=$(echo "$raw_output" | tail -n +5)
 
     # Always log raw output and stderr for debugging (especially armv7l)
     log "[DEBUG] speedtest exit code: ${RET}"
     log "[DEBUG] raw output (all $(echo "$raw_output" | wc -l) lines):"
-    while IFS= read -r line; do
+    echo "$raw_output" | while IFS= read -r line; do
         log "[DEBUG] raw: ${line}"
-    done <<< "$raw_output"
+    done
     if [ -s "${SVR_STDERR}" ]; then
         while IFS= read -r line; do
             log "[DEBUG] stderr: ${line}"
@@ -211,9 +205,6 @@ servers)
         echo '{"success":false,"message":"Server list fetch timed out"}'
     elif [ $RET -ne 0 ]; then
         log "[ERROR] 'speedtest --servers' failed with exit code $RET"
-        #while IFS= read -r line; do
-        #    log "[ERROR] stderr: ${line}"
-        #done < "${SVR_STDERR}"
         echo '{"success":false,"message":"Server list fetch failed"}'
     elif [ -s "${SERVERS_FILE}" ]; then
         log "[DEBUG] Server list updated successfully"
@@ -227,11 +218,11 @@ servers)
 getservers)
     if [ -f "${SERVERS_FILE}" ] && [ -s "${SERVERS_FILE}" ]; then
         content=$(cat "${SERVERS_FILE}")
-        json_content=$(python3 -c "
+        json_content=$(echo "$content" | python3 -c "
 import json, sys
 data = sys.stdin.read()
 print(json.dumps(data))
-" <<< "$content")
+")
         echo "{\"success\":true,\"result\":${json_content}}"
     else
         echo '{"success":false,"message":"servers.list not found or empty"}'
@@ -239,7 +230,7 @@ print(json.dumps(data))
     ;;
 
 run)
-    if [[ "${OPTION}" =~ ^[0-9]? ]]; then
+    if [ -z "${OPTION}" ] || echo "${OPTION}" | grep -qE '^[0-9]+$'; then
         ID="${OPTION}"
         OPTION=""
     fi
@@ -259,7 +250,7 @@ run)
     
             if [ -n "$OPTION" ]; then
                 timeout 240 env HOME=/root "${SPEED_SCRIPT}" "$OPTION" > "$TMP_RESULT" 2> "$TMP_STDERR" &
-            elif [[ "$ID" =~ ^[0-9]+$ ]]; then
+            elif echo "$ID" | grep -qE '^[0-9]+$'; then
                 # Only pass ID when it is a non-empty string of digits
                 timeout 240 env HOME=/root "${SPEED_SCRIPT}" "$ID" > "$TMP_RESULT" 2> "$TMP_STDERR" &
             else
