@@ -11,12 +11,21 @@
 
 Asustor app to install Ookla Speedtest and run it in a GUI.
 
-### Download the package
+### Requirements
+
+The app will only install on an Asustor NAS running ADM 5.0 or later.
+
+### Installation
+
+You can install the app from App Central.
+
+### Manual Install
 
 1. Download the latest version .apk file from https://github.com/007revad/Asustor_Ookla_Speedtest/releases and save it to your Asustor.
-2. In App Central click on Management then Manual Install.
-3. Browse to where you downloaded the .apk file.
-4. Select the .apk file and click Upload.
+    - Or download from App Central https://www.asustor.com/en/app_central/app_detail?id=1789 and save it to your Asustor.
+3. In App Central click on Management then Manual Install.
+4. Browse to where you downloaded the .apk file.
+5. Select the .apk file and click Upload.
 
 ### Screenshots
 
