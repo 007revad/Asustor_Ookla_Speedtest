@@ -1,2 +1,6 @@
+v1.0.8
+- Added favicon.
+- Updated description to include "Internet speed test.
+
 v1.0.7
 - First release.
