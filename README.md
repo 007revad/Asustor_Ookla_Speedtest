@@ -9,7 +9,7 @@
 
 ### Description
 
-Asustor app to install Ookla Speedtest and run it in a GUI.
+Asustor app to install Ookla Speedtest and run it in a GUI to test your Internet speed.
 
 ### Requirements
 
