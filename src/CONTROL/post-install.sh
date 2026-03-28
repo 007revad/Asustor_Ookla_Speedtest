@@ -42,36 +42,29 @@ log_message "Created cgi-bin/api.cgi symlink"
 # Set execute permissions for speedtest binaries
 chmod +x "${BIN_DIR}/x86_64/speedtest"  2>/dev/null && \
     log_message "Set +x on bin/x86_64/speedtest" || \
-    log_message "Warning: bin/x86_64/speedtest not found"
-    ERRORS=1
+    { log_message "Warning: bin/x86_64/speedtest not found"; ERRORS=1; }
 chmod +x "${BIN_DIR}/aarch64/speedtest" 2>/dev/null && \
     log_message "Set +x on bin/aarch64/speedtest" || \
-    log_message "Warning: bin/aarch64/speedtest not found"
-    ERRORS=1
+    { log_message "Warning: bin/aarch64/speedtest not found"; ERRORS=1; }
 
 # Set execute permissions for bash binaries
 chmod +x "${BIN_DIR}/x86_64/bash"  2>/dev/null && \
     log_message "Set +x on bin/x86_64/bash" || \
-    log_message "Warning: bin/x86_64/bash not found"
-    ERRORS=1
+    { log_message "Warning: bin/x86_64/bash not found"; ERRORS=1; }
 chmod +x "${BIN_DIR}/aarch64/bash" 2>/dev/null && \
     log_message "Set +x on bin/aarch64/bash" || \
-    log_message "Warning: bin/aarch64/bash not found"
-    ERRORS=1
+    { log_message "Warning: bin/aarch64/bash not found"; ERRORS=1; }
 
 # Set execute permissions for scripts
 chmod +x "${BIN_DIR}/speedtest.sh" 2>/dev/null && \
     log_message "Set +x on bin/speedtest.sh" || \
-    log_message "Warning: bin/speedtest.sh not found"
-    ERRORS=1
+    { log_message "Warning: bin/speedtest.sh not found"; ERRORS=1; }
 chmod +x "${BIN_DIR}/httpd.py" 2>/dev/null && \
     log_message "Set +x on bin/httpd.py" || \
-    log_message "Warning: bin/httpd.py not found"
-    ERRORS=1
+    { log_message "Warning: bin/httpd.py not found"; ERRORS=1; }
 chmod +x "${PKG_ROOT}/webman/api.cgi" 2>/dev/null && \
     log_message "Set +x on webman/api.cgi" || \
-    log_message "Warning: webman/api.cgi not found"
-    ERRORS=1
+    { log_message "Warning: webman/api.cgi not found"; ERRORS=1; }
 
 # Setup logrotate
 if cp "${PKG_ROOT}/webman/logrotate" /etc/logrotate.d/ooklaspeedtest 2>/dev/null; then
@@ -82,7 +75,7 @@ else
 fi
 
 # Set shebang in bash scripts
-if [[ ! -f "${BIN_DIR}/${ARCH}/bash" ]]; then
+if [ ! -f "${BIN_DIR}/${ARCH}/bash" ]; then
     log_message "Error: No bash binary found for architecture: ${ARCH}"
     exit 1
 else
