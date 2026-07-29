@@ -2,7 +2,7 @@
   "general": {
     "package": "Ookla-speedtest",
     "name": "Ookla Speedtest",
-    "version": "1.0.0",
+    "version": "1.0.10",
     "depends": ["python3"],
     "developer": "007revad",
     "maintainer": "007revad",

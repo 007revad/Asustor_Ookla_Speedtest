@@ -1,2 +1,13 @@
-v1.0.0
+v1.0.10
+- Added a loading gif while waiting for Ookla Speedtest to finish.
+
+v1.0.9
+- Bug fix for trying to start http damien if it was already running.
+- Bug fix for false errors being logged during installation.
+
+v1.0.8
+- Added favicon.
+- Updated description to include "Internet speed test.
+
+v1.0.7
 - First release.

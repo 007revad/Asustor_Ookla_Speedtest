@@ -1,3 +1,6 @@
+v1.0.10
+- Added a loading gif while waiting for Ookla Speedtest to finish.
+
 v1.0.9
 - Bug fix for trying to start http damien if it was already running.
 - Bug fix for false errors being logged during installation.
